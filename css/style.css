@@ -1,0 +1,210 @@
+/* ==========================================================================
+   VS - IDIOTSKÝ TURNAJ  ->  style.css
+   ========================================================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: radial-gradient(circle at 50% 20%, #1b6b2f 0%, #0a3d1a 55%, #062b12 100%);
+  color: #fff;
+  overflow: hidden;
+}
+#app {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.screen {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 24px 16px;
+  overflow-y: auto;
+}
+#screen-menu { justify-content: center; }
+#game {
+  display: none;
+  background: #0a5c1f;
+  border: 4px solid #073e14;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+/* ---------- MENU ---------- */
+.logo { text-align: center; margin-bottom: 4px; }
+.logo .vs {
+  font-size: 130px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  background: linear-gradient(180deg, #ffe600, #ff8a00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 6px 0 rgba(0,0,0,0.25);
+  font-family: 'Arial Black', Arial, sans-serif;
+}
+.subtitle {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #fff;
+  background: #d7141a;
+  padding: 6px 22px;
+  border-radius: 8px;
+  transform: rotate(-2deg);
+  box-shadow: 0 6px 0 #8c0c10;
+  margin-bottom: 36px;
+}
+.big-btn {
+  font-size: 26px;
+  font-weight: 800;
+  color: #073e14;
+  background: linear-gradient(180deg, #ffe600, #ffb300);
+  border: none;
+  border-radius: 12px;
+  padding: 18px 40px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #b07800;
+  transition: transform .08s, box-shadow .08s;
+}
+.big-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #b07800; }
+.big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b07800; }
+.big-btn.small { font-size: 18px; padding: 12px 24px; }
+.menu-hint {
+  margin-top: 28px;
+  font-size: 14px;
+  color: #d6f5d6;
+  text-align: center;
+  line-height: 1.7;
+  max-width: 540px;
+}
+
+/* ---------- nadpisy ---------- */
+.screen-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  text-align: center;
+  text-shadow: 0 3px 0 rgba(0,0,0,0.3);
+}
+.screen-title.win { color: #ffe600; }
+.screen-title.bad { color: #ff7a7a; }
+
+/* ---------- výběr země ---------- */
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 720px;
+  width: 100%;
+}
+.country-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.08);
+  border: 3px solid #fff;
+  border-radius: 10px;
+  padding: 14px 6px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  transition: transform .08s, background .15s;
+}
+.country-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.18); }
+.country-card .cflag { font-size: 30px; }
+.country-card .cname { font-size: 13px; text-align: center; }
+.country-card .swatch {
+  position: absolute; top: 6px; right: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.6);
+}
+@media (max-width: 640px) { .country-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.back-btn {
+  margin-top: 16px;
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.back-btn:hover { background: rgba(0,0,0,0.55); }
+.btn-row { display: flex; gap: 14px; margin-top: 18px; align-items: center; }
+
+/* ---------- sestava ---------- */
+.squad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  max-width: 860px;
+  width: 100%;
+}
+.pl-card {
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.pl-canvas { display: block; margin: 0 auto; }
+.pl-name { font-size: 12px; font-weight: 700; margin-top: 4px; }
+.pl-pos { font-size: 11px; color: #aef0ae; }
+.pl-defect { font-size: 11px; color: #ffd24d; margin-top: 3px; }
+
+/* ---------- info / tabulky ---------- */
+.info-body {
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; max-width: 720px;
+}
+.info-note { margin-top: 14px; font-size: 15px; text-align: center; line-height: 1.6; }
+.info-note.ok { color: #7dff7d; font-weight: 700; }
+.info-note.bad { color: #ff8a8a; font-weight: 700; }
+.ok { color: #7dff7d; } .bad { color: #ff8a8a; }
+
+.groups-wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
+.group-box { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px; }
+.group-title { font-weight: 800; text-align: center; margin-bottom: 8px; color: #ffe600; }
+.group-row { font-size: 13px; padding: 4px 2px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.group-row.me { background: rgba(255,230,0,0.15); border-radius: 4px; }
+@media (max-width: 640px) { .groups-wrap { grid-template-columns: repeat(2, 1fr); } }
+
+.stand { width: 100%; border-collapse: collapse; font-size: 14px; }
+.stand th, .stand td { padding: 8px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.stand th { color: #ffe600; }
+.stand td:nth-child(2) { text-align: left; }
+.stand tr.adv td { background: rgba(60,200,60,0.12); }
+.stand tr.me td { font-weight: 800; color: #ffe600; }
+
+.score-line {
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  font-size: 22px; font-weight: 700; margin: 10px 0;
+}
+.score-line .score {
+  background: #ffe600; color: #073e14; padding: 4px 16px; border-radius: 8px; font-size: 26px;
+}
+
+.vs-box {
+  display: flex; align-items: center; justify-content: center; gap: 24px;
+  margin: 20px 0; font-size: 22px; font-weight: 800; text-align: center;
+}
+.vs-box .vs-team { font-size: 34px; }
+.vs-box .vs-mid { font-size: 40px; color: #ff4f4f; -webkit-text-stroke: 2px #fff; }
+
+/* ---------- konfety ---------- */
+.confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 50; }
+.confetti i {
+  position: absolute; top: -20px; width: 10px; height: 16px;
+  animation: fall 4s linear forwards;
+}
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0.7; }
+}
