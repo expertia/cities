@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VS — IDIOTSKÝ TURNAJ</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- HLAVNÍ MENU -->
+    <section id="screen-menu" class="screen active">
+      <div class="menu-box">
+        <div class="logo">VS</div>
+        <h1 class="title">IDIOTSKÝ TURNAJ</h1>
+        <p class="subtitle">Fotbalové mistrovství 16 podivných národů</p>
+        <button id="btn-play" class="big-btn">HRÁT IDIOT TURNAJ</button>
+        <p class="hint">Ovládání: šipky = pohyb &nbsp;•&nbsp; I = nahrávka &nbsp;•&nbsp; L = střela / penalta</p>
+      </div>
+    </section>
+
+    <!-- VÝBĚR ZEMĚ -->
+    <section id="screen-select" class="screen">
+      <h2 class="screen-title">VYBER SI ZEMI</h2>
+      <p class="screen-sub">Za koho budeš na IDIOTSKÉM TURNAJI hrát?</p>
+      <div id="country-grid" class="country-grid"></div>
+    </section>
+
+    <!-- SOUPISKA -->
+    <section id="screen-roster" class="screen">
+      <h2 id="roster-title" class="screen-title">SOUPISKA</h2>
+      <p class="screen-sub">Každý hráč má jednu vadu. Tohle je tvůj tým.</p>
+      <div id="roster-grid" class="roster-grid"></div>
+      <div class="roster-actions">
+        <button id="btn-back-select" class="btn">‹ Změnit zemi</button>
+        <button id="btn-start-tournament" class="big-btn">DO TURNAJE ›</button>
+      </div>
+    </section>
+
+    <!-- PŘEHLED TURNAJE -->
+    <section id="screen-tournament" class="screen">
+      <h2 id="tour-phase-title" class="screen-title">SKUPINOVÁ FÁZE</h2>
+      <div id="tour-content" class="tour-content"></div>
+      <div class="tour-actions">
+        <button id="btn-next-match" class="big-btn">ODEHRÁT ZÁPAS</button>
+      </div>
+    </section>
+
+    <!-- ZÁPAS -->
+    <section id="screen-match" class="screen match-screen">
+      <canvas id="game-canvas" width="960" height="600"></canvas>
+    </section>
+
+    <!-- VÝSLEDEK ZÁPASU -->
+    <section id="screen-result" class="screen">
+      <div class="result-box">
+        <h2 id="result-title">VÝSLEDEK</h2>
+        <div id="result-score" class="result-score"></div>
+        <div id="result-detail" class="result-detail"></div>
+        <button id="btn-result-continue" class="big-btn">POKRAČOVAT ›</button>
+      </div>
+    </section>
+
+    <!-- KONEC -->
+    <section id="screen-end" class="screen">
+      <div class="result-box">
+        <h2 id="end-title"></h2>
+        <div id="end-detail" class="result-detail"></div>
+        <button id="btn-end-menu" class="big-btn">ZPĚT DO MENU</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/faces.js"></script>
+  <script src="js/tournament.js"></script>
+  <script src="js/match.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
