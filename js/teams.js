@@ -335,6 +335,53 @@ function drawLeg(ctx, x, topY, s, swing, shorts, skin, footFwd) {
   ctx.fill();
 }
 
+/* realistický fotbalový míč (kopačák) s rotací = kutálí se */
+function pentagon(ctx, cx, cy, rad, rot) {
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) {
+    const a = rot + i * 2 * Math.PI / 5;
+    const px = cx + Math.cos(a) * rad, py = cy + Math.sin(a) * rad;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.closePath(); ctx.fill();
+}
+function drawSoccerBall(ctx, x, y, r, rot) {
+  rot = rot || 0;
+  // stín na trávě
+  ctx.fillStyle = 'rgba(0,0,0,0.28)';
+  ctx.beginPath(); ctx.ellipse(x, y + r * 0.7, r * 1.05, r * 0.4, 0, 0, Math.PI * 2); ctx.fill();
+  // koule se stínováním (3D)
+  const g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.12, x, y, r);
+  g.addColorStop(0, '#ffffff'); g.addColorStop(0.6, '#ededed'); g.addColorStop(1, '#bdbdbd');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  // vzor (rotuje s pohybem)
+  ctx.save();
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.clip();
+  ctx.translate(x, y); ctx.rotate(rot);
+  ctx.fillStyle = '#1b1b1b';
+  pentagon(ctx, 0, 0, r * 0.4, -Math.PI / 2);             // středový pětiúhelník
+  for (let i = 0; i < 5; i++) {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / 5;
+    pentagon(ctx, Math.cos(a) * r * 0.96, Math.sin(a) * r * 0.96, r * 0.34, a + Math.PI / 5);
+  }
+  ctx.strokeStyle = 'rgba(30,30,30,0.5)';
+  ctx.lineWidth = Math.max(1, r * 0.06);
+  for (let i = 0; i < 5; i++) {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / 5;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a) * r * 0.4, Math.sin(a) * r * 0.4);
+    ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+    ctx.stroke();
+  }
+  ctx.restore();
+  // obrys + lesklý odlesk
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.beginPath(); ctx.ellipse(x - r * 0.38, y - r * 0.42, r * 0.26, r * 0.15, -0.6, 0, Math.PI * 2); ctx.fill();
+}
+
 /* malé pomocné funkce */
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();

@@ -11,7 +11,7 @@ const POSTS = {
 };
 const HALF_LEN = 180;          // délka jednoho poločasu v sekundách (3:00)
 const PLAYER_R = 15;
-const BALL_R = 11;
+const BALL_R = 9;
 const CONTROL_DIST = 28;       // získání volného míče
 const STEAL_DIST = 22;         // odebrání míče
 
@@ -75,7 +75,7 @@ class Match {
     this.opts = opts || {};
     this.home = new MatchTeam(homeName, +1, true);
     this.away = new MatchTeam(awayName, -1, false);
-    this.ball = { x: FIELD.w / 2, y: FIELD.h / 2, vx: 0, vy: 0 };
+    this.ball = { x: FIELD.w / 2, y: FIELD.h / 2, vx: 0, vy: 0, rot: 0 };
     this.owner = null;          // hráč držící míč
     this.kickCooldown = 0;      // bránění okamžitému přebrání po kopu
     this.time = 0;              // herní čas v sekundách
@@ -337,6 +337,9 @@ class Match {
         }
       }
     }
+
+    // rotace míče podle rychlosti (vizuální kutálení)
+    this.ball.rot += Math.hypot(this.ball.vx, this.ball.vy) * dt * 0.05;
   }
 
   checkGoalsAndWalls() {
@@ -458,14 +461,7 @@ class Match {
 
   drawBall(ctx) {
     const b = this.ball;
-    ctx.fillStyle = 'rgba(0,0,0,0.3)';
-    ctx.beginPath(); ctx.ellipse(b.x, b.y + 2, BALL_R, BALL_R * 0.6, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.beginPath(); ctx.arc(b.x, b.y, BALL_R, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#222';
-    ctx.beginPath(); ctx.arc(b.x, b.y, BALL_R * 0.4, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#bbb'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(b.x, b.y, BALL_R, 0, Math.PI * 2); ctx.stroke();
+    drawSoccerBall(ctx, b.x, b.y, BALL_R, b.rot);
   }
 
   drawHUD(ctx, cw, ch) {

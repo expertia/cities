@@ -616,9 +616,7 @@ class PenaltyShootout {
       bx = lerp(cw / 2, target, Math.min(1, this.anim / 0.9));
       by = lerp(ch - 90, ty, Math.min(1, this.anim / 0.9));
     }
-    ctx.fillStyle = '#fff';
-    ctx.beginPath(); ctx.arc(bx, by, 14, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(bx, by, 5, 0, Math.PI * 2); ctx.fill();
+    drawSoccerBall(ctx, bx, by, 13, (this.phase === 'anim' ? this.anim * 12 : 0));
 
     // kdo kope - malý avatar dole
     const shooterColor = this.turn === 'home' ? this.home.shirt : this.away.shirt;
