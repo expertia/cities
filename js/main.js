@@ -629,8 +629,9 @@ class PenaltyShootout {
     // HUD
     ctx.fillStyle = 'rgba(0,0,0,0.75)';
     roundRect(ctx, 14, 14, 320, 56, 10); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'left';
-    ctx.fillText(`${this.home.short}  ${this.homeScore} : ${this.awayScore}  ${this.away.short}`, 28, 38);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left';
+    ctx.font = '20px "Segoe UI Emoji", "Noto Color Emoji", Arial';
+    ctx.fillText(`${this.home.flag}  ${this.homeScore} : ${this.awayScore}  ${this.away.flag}`, 28, 40);
     ctx.font = '13px Arial';
     ctx.fillText('PENALTOVÝ ROZSTŘEL', 28, 60);
     // ukazatele kopů

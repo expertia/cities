@@ -145,14 +145,26 @@ function drawPlayerAvatar(ctx, x, y, s, look, jersey, opts) {
   ctx.ellipse(0, 0, 9 * s, 3.4 * s, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  // nohy
-  ctx.fillStyle = jersey.shorts;
-  ctx.fillRect(-5 * s, -14 * s, 4 * s, 8 * s);
-  ctx.fillRect(1 * s, -14 * s, 4 * s, 8 * s);
+  // --- nohy s animací běhu / kopací postoj ---
+  const phase = opts.phase || 0;
+  const moving = !!opts.moving;
+  const faceX = Math.cos(opts.facing || 0);          // promítnutí směru do osy x
+  const swing = moving ? Math.sin(phase) : 0;
+  // hráč s míčem stojí v rozkročeném postoji, přední noha napřažená
+  const rightFwd = opts.hasBall && faceX >= 0 ? 5 * s : 0;
+  const leftFwd  = opts.hasBall && faceX < 0 ? -5 * s : 0;
+  const lSwing = moving ? -swing : (opts.hasBall ? -0.35 : 0);
+  const rSwing = moving ? swing : (opts.hasBall ? 0.35 : 0);
+  drawLeg(ctx, -3 * s, -14 * s, s, lSwing, jersey.shorts, skin, leftFwd);
+  drawLeg(ctx, 3 * s, -14 * s, s, rSwing, jersey.shorts, skin, rightFwd);
 
-  // tělo (dres)
+  // tělo (dres) - mírně realističtější tvar s rameny
   ctx.fillStyle = jersey.shirt;
-  roundRect(ctx, -7 * s, -27 * s, 14 * s, 15 * s, 3 * s);
+  roundRect(ctx, -7.5 * s, -27 * s, 15 * s, 16 * s, 4 * s);
+  ctx.fill();
+  // límeček
+  ctx.fillStyle = darken(jersey.shirt, 18);
+  roundRect(ctx, -4 * s, -28 * s, 8 * s, 3 * s, 1.5 * s);
   ctx.fill();
   // číslo na dresu
   if (opts.number != null && s > 1.4) {
@@ -161,10 +173,18 @@ function drawPlayerAvatar(ctx, x, y, s, look, jersey, opts) {
     ctx.textAlign = 'center';
     ctx.fillText(opts.number, 0, -16 * s);
   }
-  // ruce
-  ctx.fillStyle = skin;
-  ctx.fillRect(-9 * s, -26 * s, 3 * s, 10 * s);
-  ctx.fillRect(6 * s, -26 * s, 3 * s, 10 * s);
+  // ruce (rukáv dresu + předloktí)
+  const armSwing = moving ? Math.sin(phase) * 2 * s : 0;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    const sx = side * 8 * s;
+    // rukáv
+    ctx.strokeStyle = jersey.shirt; ctx.lineWidth = 3.4 * s;
+    ctx.beginPath(); ctx.moveTo(side * 6.5 * s, -25 * s); ctx.lineTo(sx, -20 * s); ctx.stroke();
+    // předloktí (kůže)
+    ctx.strokeStyle = skin; ctx.lineWidth = 2.8 * s;
+    ctx.beginPath(); ctx.moveTo(sx, -20 * s); ctx.lineTo(sx + side * 1 * s, -14 * s - armSwing * side); ctx.stroke();
+  }
 
   // hlava
   const headY = -34 * s;
@@ -289,6 +309,30 @@ function drawPlayerAvatar(ctx, x, y, s, look, jersey, opts) {
   }
 
   ctx.restore();
+}
+
+/* noha: stehno (trenky) + lýtko (kůže) + kopačka, s animací */
+function drawLeg(ctx, x, topY, s, swing, shorts, skin, footFwd) {
+  footFwd = footFwd || 0;
+  const hipY = topY, footY = 0;
+  const kneeY = topY * 0.4;
+  const footX = x + swing * 3 * s + footFwd;
+  const kneeX = x + swing * 1.5 * s + footFwd * 0.5;
+  ctx.lineCap = 'round';
+  // stehno
+  ctx.strokeStyle = shorts; ctx.lineWidth = 4.4 * s;
+  ctx.beginPath(); ctx.moveTo(x, hipY); ctx.lineTo(kneeX, kneeY); ctx.stroke();
+  // lýtko
+  ctx.strokeStyle = skin; ctx.lineWidth = 3.4 * s;
+  ctx.beginPath(); ctx.moveTo(kneeX, kneeY); ctx.lineTo(footX, footY); ctx.stroke();
+  // ponožka
+  ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3.4 * s;
+  ctx.beginPath(); ctx.moveTo(footX, footY - 3 * s); ctx.lineTo(footX, footY - 0.5 * s); ctx.stroke();
+  // kopačka
+  ctx.fillStyle = '#161616';
+  ctx.beginPath();
+  ctx.ellipse(footX + Math.sign(footFwd || 0.001) * 1.4 * s, footY, 3.4 * s, 1.9 * s, 0, 0, Math.PI * 2);
+  ctx.fill();
 }
 
 /* malé pomocné funkce */

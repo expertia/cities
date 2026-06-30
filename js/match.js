@@ -11,8 +11,8 @@ const POSTS = {
 };
 const HALF_LEN = 180;          // délka jednoho poločasu v sekundách (3:00)
 const PLAYER_R = 15;
-const BALL_R = 8;
-const CONTROL_DIST = 26;       // získání volného míče
+const BALL_R = 11;
+const CONTROL_DIST = 28;       // získání volného míče
 const STEAL_DIST = 22;         // odebrání míče
 
 /* formace 1 GK + 5 hráčů v poli; x relativně 0..1 (0=vlastní brána) */
@@ -35,6 +35,7 @@ class MatchPlayer {
     this.formY = formSlot.y;
     this.x = 0; this.y = 0;
     this.vx = 0; this.vy = 0;
+    this.animPhase = 0; this.moving = false;
     this.facing = team.attackDir > 0 ? 0 : Math.PI; // 0 = doprava
     this.squad = squadPlayer;
   }
@@ -273,6 +274,9 @@ class Match {
     for (const p of this.allPlayers()) {
       p.x = clamp(p.x + p.vx * dt, 10, FIELD.w - 10);
       p.y = clamp(p.y + p.vy * dt, FIELD.wallY + 6, FIELD.h - FIELD.wallY - 6);
+      const sp = Math.hypot(p.vx, p.vy);
+      p.moving = sp > 15;
+      p.animPhase += sp * dt * 0.05;
     }
     // jednoduchá kolize mezi hráči
     const all = this.allPlayers();
@@ -402,16 +406,17 @@ class Match {
     // míč stín + entity prokládáme jednoduše: nejdřív hráči, míč navrch s ohledem na y
     for (const p of all) {
       const isGoalie = p.isGK;
-      drawPlayerAvatar(ctx, p.x, p.y, 0.62, p.squad.look,
-        isGoalie ? p.team.gkJersey : p.team.jersey,
-        { number: p.squad.number });
       if (p === this.controlled) {
         ctx.strokeStyle = '#ffe600';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, 12, 5, 0, 0, Math.PI * 2);
+        ctx.ellipse(p.x, p.y, 16, 6, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
+      drawPlayerAvatar(ctx, p.x, p.y, 0.82, p.squad.look,
+        isGoalie ? p.team.gkJersey : p.team.jersey,
+        { number: p.squad.number, phase: p.animPhase, moving: p.moving,
+          facing: p.facing, hasBall: this.owner === p });
     }
     this.drawBall(ctx);
     ctx.restore();
@@ -471,18 +476,16 @@ class Match {
     ctx.save();
     ctx.fillStyle = 'rgba(0,0,0,0.72)';
     roundRect(ctx, 14, 14, 300, 56, 10); ctx.fill();
-    // barevné odznaky
-    ctx.fillStyle = this.home.jersey.shirt; ctx.fillRect(26, 26, 16, 16);
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.strokeRect(26, 26, 16, 16);
-    ctx.fillStyle = this.away.jersey.shirt; ctx.fillRect(26, 46, 16, 16);
-    ctx.strokeRect(26, 46, 16, 16);
+    // vlajky zemí
+    ctx.textAlign = 'left';
+    ctx.font = '22px "Segoe UI Emoji", "Noto Color Emoji", Arial';
+    ctx.fillText(this.home.country.flag, 26, 41);
+    ctx.fillText(this.away.country.flag, 26, 63);
+    // skóre
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px Arial'; ctx.textAlign = 'left';
-    ctx.fillText(`${this.home.country.short}`, 50, 39);
-    ctx.fillText(`${this.away.country.short}`, 50, 59);
-    ctx.font = 'bold 22px Arial'; ctx.textAlign = 'right';
-    ctx.fillText(`${this.home.goals}`, 150, 40);
-    ctx.fillText(`${this.away.goals}`, 150, 60);
+    ctx.font = 'bold 24px Arial'; ctx.textAlign = 'right';
+    ctx.fillText(`${this.home.goals}`, 150, 41);
+    ctx.fillText(`${this.away.goals}`, 150, 63);
     // hodiny
     ctx.fillStyle = '#ffe600';
     ctx.font = 'bold 26px monospace'; ctx.textAlign = 'right';
