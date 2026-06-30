@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VS — IDIOTSKÝ TURNAJ</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== MENU ===== -->
+  <section id="menu" class="screen active">
+    <div class="vs-logo">VS</div>
+    <h1 class="title">IDIOTSKÝ <span>TURNAJ</span></h1>
+    <p class="tagline">16 zemí. 176 prapodivných hráčů. Jeden idiotský pohár.</p>
+    <button id="playBtn" class="bigbtn">▶ HRÁT IDIOT TURNAJ</button>
+    <button id="howBtn" class="linkbtn">Jak hrát?</button>
+    <div id="howto" class="howto hidden">
+      <h3>Ovládání</h3>
+      <ul>
+        <li><b>Šipky</b> — pohyb hráče</li>
+        <li><b>I</b> — nahrávka spoluhráči</li>
+        <li><b>L</b> — střela (a kopání penalt)</li>
+      </ul>
+      <p>Zápas trvá 3 minuty (jeden poločas). Výhra = 3 body, remíza = 1, prohra = 0.
+      Ze skupiny postupují 2 týmy. V pavouku se při remíze kopou penalty.</p>
+    </div>
+  </section>
+
+  <!-- ===== VÝBĚR ZEMĚ ===== -->
+  <section id="select" class="screen">
+    <h2 class="head">VYBER SI ZEMI</h2>
+    <div id="countryGrid" class="grid"></div>
+  </section>
+
+  <!-- ===== SESTAVA ===== -->
+  <section id="squad" class="screen">
+    <h2 id="squadTitle" class="head"></h2>
+    <p class="sub">Tvoje banda idiotů — každý má svou vadu na kráse.</p>
+    <div id="squadList" class="squadlist"></div>
+    <div class="row">
+      <button id="backToSelect" class="linkbtn">← Zpět na výběr</button>
+      <button id="confirmTeam" class="bigbtn small">POTVRDIT A LOSOVAT ▶</button>
+    </div>
+  </section>
+
+  <!-- ===== HUB (turnaj) ===== -->
+  <section id="hub" class="screen">
+    <div id="hubContent"></div>
+  </section>
+
+  <!-- ===== ZÁPAS ===== -->
+  <section id="matchWrap" class="screen">
+    <canvas id="game" width="960" height="600"></canvas>
+    <div id="matchOverlay" class="matchOverlay hidden">
+      <div id="moText"></div>
+      <button id="moBtn" class="bigbtn small"></button>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/teams.js"></script>
+<script src="js/faces.js"></script>
+<script src="js/tournament.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
